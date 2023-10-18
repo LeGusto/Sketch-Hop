@@ -1,0 +1,22 @@
+Global overview of the game {
+    The player controls a character that jumps on platforms. The goal of the game is to get
+    up as high as possible and get a good score. The game has multiple enemies and obstacles that can
+    knock the player off, resulting in a loss. The game will only move upwards, if the character
+    falls below the visible screen, the players loses. There will be multiple types of platforms,
+    such as booster platforms that boost the player up very high and breakable platforms that shatter
+    when the player jumps on them.
+}
+
+Main features {
+    - A character that jumps on platforms which the player can control
+    - Procedurally generated platforms that the player can jump on
+    - Multiple types of platforms
+    - A score counter that increases as the player goes up
+}
+
+Learning goals {
+    Procedural generation (algorithm)
+    Git for version control
+    Accesible User Interface
+    User-friendly game design (satisfying sound design, easy controls, etc.)
+}

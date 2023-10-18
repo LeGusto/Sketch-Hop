@@ -1,0 +1,60 @@
+Window to play the game in (Demonstrated by launching the program and creating a new window for the game)
+
+Menu gui (Demonstrated by launching the game and seeing a menu before initializing the game)
+
+Take user keyboard input (Demonstrated by pressing a button on your keyboard and receiving a response from the game)
+
+Player and platform objects (Demonstrated by a visible objects upon launching the game and pressing play)
+
+Player-platform interactions (Demonstrated by the player jumping on a platform and going up)
+
+Platforms with different functionalities (Demonstrated by platforms that possess unique traits such as moving side to side)
+
+Movement for the character (Demonstrated by an object that moves upon receiving user keyboard input)
+
+Procedural generation for the level (Demonstrated by procedurally appearing platforms as the player moves up)
+
+Sprites for objects (Demonstrated by nice looking pictures representing the objects)
+
+Enemies (Demonstrated by sprites, that appear as the player goes up, that kill the player when it touches them)
+
+Player shooting ability (Demonstrated by the player being able to shoot pellets upwards)
+
+Score system (Demonstrated by an increasing counter as the player goes up)
+
+Sounds for game functionalities (Demonstrated by sounds when you play the game)
+
+
+
+/*JFrame frame = new JFrame("game");
+        
+        JPanel main = new JPanel(null, false);
+        main.setSize(100, 100);
+
+        ImageIcon img = new ImageIcon("coolSpongebob.jpg");
+
+        JLabel lab = new JLabel(img);
+        
+        JPanel panel = new JPanel();
+        Color black = new Color(255, 0, 0);
+        panel.setBackground(black);
+        panel.setSize(100, 100);
+        //frame.add(main);
+
+        JButton playButton = new JButton("drawing bounce");
+        //frame.paintComponents(null);
+        
+        main.add(panel);
+        panel.add(playButton);
+        frame.add(panel);
+        frame.add(lab);
+        playButton.setSize(100, 50);
+        
+        frame.setVisible(true);
+        frame.setSize(300, 500);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        playButton.setLayout(null);
+
+        System.out.println(main.getHeight());
+
+        playButton.setLocation(0, 225);*/
