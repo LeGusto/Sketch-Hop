@@ -12,7 +12,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
     JFrame frame = new JFrame();
     JFrame gameFrame;
 
-    Timer jumpTimer = new Timer(20, this);
+    Timer jumpTimer = new Timer(10, this);
     Timer gameTimer = new Timer(10, this);    
 
     int movementPixels = 5; //amount of pixels the player moves each tick to the sides
@@ -32,6 +32,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
         System.out.println("Hsdfkalfds");
         frame.addKeyListener(this);
         frame.setVisible(true);
+        //gamePanel.setDoubleBuffered(true);
     }
     
     public void actionPerformed(ActionEvent e) {
@@ -40,14 +41,14 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 //System.out.println("pressing A");
             
                 gamePanel.x -= movementPixels;
-                gamePanel.paintComponent(gamePanel.getGraphics());
+                //gamePanel.paintComponent(gamePanel.getGraphics());
             }
 
             if (isHoldingD && (gamePanel.x + 30) < gameFrame.getWidth()) {
 
                 
                 gamePanel.x += movementPixels;
-                gamePanel.paintComponent(gamePanel.getGraphics());
+                //gamePanel.paintComponent(gamePanel.getGraphics());
                 //System.out.println(gamePanel.x + " " + gameFrame.getWidth());
             }
         }
@@ -57,29 +58,50 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
             boolean jumped = false;
 
-            //int futureGamePanelY = gamePanel.y + gamePanel.y += (20 - counter % 20) * Math.pow(-1, counter / 20);
 
 
             for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
-                if ((counter / 20) % 2 == 0 && i.get(1) - gamePanel.y <= 5 && i.get(1) - gamePanel.y > 0 && gamePanel.x - i.get(0) <= 50) {
-                    counter = 20;
-                    jumped = true;
-                    System.out.print("Jumped");
-                    break;
+                if (!(counter >= 20)) { 
+                    continue; // checks if the player is falling down
                 }
+                // calculates the player's position after performing the upcoming movement
+                int futureGamePanelY = gamePanel.y;
+                futureGamePanelY += Math.min(20, counter - 20 + 1);
+
+                // check if the player is currently above the platform and if the player will be
+                // beneath it after peforming the upcoming movement
+                if (!(i.get(1) >= gamePanel.y + gamePanel.playerHeight
+                    && i.get(1) <= futureGamePanelY + gamePanel.playerHeight)) {
+                    continue;
+                }
+
+                // check if player x coordinate is close to platform x coordinate
+                if (!(gamePanel.x + gamePanel.playerWidth - i.get(0) <= 60 + gamePanel.playerWidth 
+                    && gamePanel.x + gamePanel.playerWidth - i.get(0) > 0)) {
+                    continue;
+                }
+
+                gamePanel.y = i.get(1) - gamePanel.platformHeight - gamePanel.playerHeight;
+                counter = 0;
+                jumped = true;
+                gamePanel.repaint();
+                break;
             }
 
             if (!jumped ) {
                 counter += 1;
-            }
 
-            if ((counter / 20) % 2 == 0) {
-                gamePanel.y += (counter % 20 + 1) * Math.pow(-1, counter / 20);
-            } else {
-                gamePanel.y += (20 - counter % 20) * Math.pow(-1, counter / 20);
+                if (counter >= 20) {
+                    gamePanel.y += Math.min(20, (counter - 20 + 1));
+                } else {
+                    gamePanel.y -= (20 - counter);
+                }
+
             }
-            gamePanel.paintComponent(gamePanel.getGraphics());
+            //gamePanel.paintComponent(gamePanel.getGraphics());
         }
+        gamePanel.repaint(); // I don't know why, but repaint stops the flickering...
+        //gamePanel.paintComponent(gamePanel.getGraphics());
     }
 
     
@@ -89,13 +111,13 @@ public class PlayerMovement implements KeyListener, ActionListener {
         //System.out.println("Hi");
         if (e.getKeyCode() == 97 || e.getKeyCode() == 65 && !isHoldingA && gamePanel.x > 0) { 
             gamePanel.x -= movementPixels;
-            gamePanel.paintComponent(gamePanel.getGraphics());
+            gamePanel.repaint();
         }
         
         if (e.getKeyCode() == 100 || e.getKeyCode() == 68
             && !isHoldingD && (gamePanel.x + 30) < gameFrame.getWidth()) {
             gamePanel.x += movementPixels;
-            gamePanel.paintComponent(gamePanel.getGraphics());
+            gamePanel.repaint();
         }
 
         // when the player presses a or A

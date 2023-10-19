@@ -11,9 +11,13 @@ import java.util.ArrayList;
 public class ShapeDrawer extends JPanel {
     int x = 100;
     int y = 500;
+    int playerHeight;
+    int platformHeight;
+    int playerWidth;
     JFrame gameFrame;
     //JPanel gamePanel;
-    Random rand = new Random(1);
+
+    Random rand = new Random(2);
 
     // dumb data structuring
     ArrayList<ArrayList<Integer>> platformCoordinates;
@@ -23,6 +27,9 @@ public class ShapeDrawer extends JPanel {
     ShapeDrawer(JFrame gameFrame) {
         this.gameFrame = gameFrame;
         this.platformCoordinates = new ArrayList<ArrayList<Integer>>(); 
+        this.playerHeight = 55;
+        this.playerWidth = 34;
+        this.platformHeight = 15;
     }
     
     public void generatePlatform(int boundY) {
@@ -61,10 +68,10 @@ public class ShapeDrawer extends JPanel {
 
         g.setColor(new Color(0, 0, 0));
         for (ArrayList<Integer> i : platformCoordinates) {
-            g.fillRect(i.get(0), i.get(1), 60, 10);
+            g.fillRect(i.get(0), i.get(1), 60, 15);
         }
 
-        g.fillRect(x, y, 34, 55);
+        g.fillRect(x, y, playerWidth, playerHeight);
         int i = 0;
         i++;
         

@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 class GUI implements ActionListener {
@@ -38,11 +40,13 @@ class GUI implements ActionListener {
         //panel.add(playButton3);
 
         frame.add(startPanel, BorderLayout.SOUTH);
-
         frame.add(label);
 
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        frame.setSize((int)size.getWidth(), (int)size.getHeight());
         frame.setVisible(true);
 
         gamePanel.setBackground(new Color(255, 0, 0));
@@ -61,6 +65,10 @@ class GUI implements ActionListener {
         //something.run();
         movement.run();
         gamePanel.generatePlatform(0);
+        ArrayList<Integer> initPlatform = new ArrayList<Integer>();
+        initPlatform.add(100);
+        initPlatform.add(600);
+        gamePanel.platformCoordinates.add(initPlatform);
         //Platform platformGenerator = new Platform(-100, -100, frame);
         //platformGenerator.generatePlatform(0);
 
