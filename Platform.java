@@ -22,9 +22,7 @@ public class Platform extends JPanel {
         this.y = y;
         this.gameFrame = gameFrame;
     }
-
-
-    
+        
     public void generatePlatform(int boundY) {
         for (int i = boundY; i < 95; i += jumpHeight) {
             for (int j = 0; j < 1; j++) {

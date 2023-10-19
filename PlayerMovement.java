@@ -95,11 +95,22 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 if (counter >= 20) {
                     gamePanel.y += Math.min(20, (counter - 20 + 1));
                 } else {
-                    // checks if player is below 
+                    // checks if player has reached a certain height
                     if (gamePanel.y - (20 - counter) <= 550) {
                         gamePanel.y = 550;
+
+                        // moves platforms down by the amount that the player did not move
                         for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
                             i.set(1, i.get(1) + 20 - counter);
+                        }
+                        
+                        // removes platform if it is not on screen anymore. Not possible with
+                        // for-each loop, because it would delete elements it was iterating over
+                        for (int i = 0; i < gamePanel.platformCoordinates.size(); i++) {
+                            if (gamePanel.platformCoordinates.get(i).get(1) > 900) {
+                                gamePanel.platformCoordinates.remove(i);
+                                i--;
+                            }
                         }
                     } else {
                         gamePanel.y -= 20 - counter;
