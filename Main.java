@@ -2,9 +2,12 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Main {//implements KeyListener {
-    JFrame frame = new JFrame();
-    ShapeDrawer shapeDrawer = new ShapeDrawer();
+/**
+ * .
+ */
+public class Main { //implements KeyListener {
+    //JFrame frame = new JFrame();
+    //ShapeDrawer shapeDrawer = new ShapeDrawer(frame);
 
     public void run() {
         GUI gui = new GUI();

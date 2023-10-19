@@ -18,7 +18,7 @@ class GUI implements ActionListener {
 
     GUI() {
         frame = new JFrame("game");
-        gamePanel = new ShapeDrawer();
+        gamePanel = new ShapeDrawer(frame);
         movement = new PlayerMovement(gamePanel, frame);
     }
 
@@ -60,6 +60,9 @@ class GUI implements ActionListener {
         //frame.addKeyListener(something);
         //something.run();
         movement.run();
+        gamePanel.generatePlatform(0);
+        //Platform platformGenerator = new Platform(-100, -100, frame);
+        //platformGenerator.generatePlatform(0);
 
     }
 
