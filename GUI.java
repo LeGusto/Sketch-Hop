@@ -46,7 +46,7 @@ class GUI implements ActionListener {
 
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize((int)size.getWidth(), (int)size.getHeight());
+        frame.setSize((int) size.getWidth(), (int) size.getHeight());
         frame.setVisible(true);
 
         gamePanel.setBackground(new Color(255, 0, 0));

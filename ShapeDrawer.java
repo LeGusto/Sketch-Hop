@@ -1,8 +1,7 @@
 import java.awt.*;
-import java.nio.channels.Pipe;
+import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
-import java.util.ArrayList;
 
 
 /**
@@ -24,6 +23,9 @@ public class ShapeDrawer extends JPanel {
 
     int jumpHeight = 95;
 
+    /**
+     * .
+     */
     ShapeDrawer(JFrame gameFrame) {
         this.gameFrame = gameFrame;
         this.platformCoordinates = new ArrayList<ArrayList<Integer>>(); 
@@ -32,6 +34,9 @@ public class ShapeDrawer extends JPanel {
         this.platformHeight = 15;
     }
     
+    /**
+     * .
+     */
     public void generatePlatform(int boundY) {
         for (int i = gameFrame.getHeight(); i > boundY; i -= jumpHeight) {
             for (int j = 0; j < 5; j++) {
@@ -70,15 +75,6 @@ public class ShapeDrawer extends JPanel {
         for (ArrayList<Integer> i : platformCoordinates) {
             g.fillRect(i.get(0), i.get(1), 60, 15);
         }
-
         g.fillRect(x, y, playerWidth, playerHeight);
-        int i = 0;
-        i++;
-        
-        if (i % 2 == 0) {
-            setBackground(new Color(0, 0, 0));
-        } else {
-            setBackground(new Color(255, 255, 255));
-        }        
     }
 }

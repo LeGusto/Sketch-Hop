@@ -35,6 +35,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
         //gamePanel.setDoubleBuffered(true);
     }
     
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == gameTimer) {
             if (isHoldingA && gamePanel.x > 0) {
@@ -88,15 +89,22 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 break;
             }
 
-            if (!jumped ) {
+            if (!jumped) {
                 counter += 1;
 
                 if (counter >= 20) {
                     gamePanel.y += Math.min(20, (counter - 20 + 1));
                 } else {
-                    gamePanel.y -= (20 - counter);
+                    // checks if player is below 
+                    if (gamePanel.y - (20 - counter) <= 550) {
+                        gamePanel.y = 550;
+                        for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
+                            i.set(1, i.get(1) + 20 - counter);
+                        }
+                    } else {
+                        gamePanel.y -= 20 - counter;
+                    }
                 }
-
             }
             //gamePanel.paintComponent(gamePanel.getGraphics());
         }
