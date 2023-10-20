@@ -68,7 +68,7 @@ public class ShapeDrawer extends JPanel {
     }
 
     /**
-     * Poep.
+     * .
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);        

@@ -27,12 +27,83 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
     int counter = 0;
 
+    boolean jumped = false;
+
     public void run() {
         jumpTimer.start();
         System.out.println("Hsdfkalfds");
         frame.addKeyListener(this);
         frame.setVisible(true);
         //gamePanel.setDoubleBuffered(true);
+    }
+
+    public void jump() {
+        counter += 1;
+        
+        if (counter >= 20) {
+            gamePanel.y += Math.min(20, (counter - 20 + 1));
+        } else {
+            // checks if player is below 
+            if (gamePanel.y - (20 - counter) <= 500) {
+                gamePanel.y = 500;
+                for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
+                    i.set(1, i.get(1) + 20 - counter);
+                }
+
+                // removes platform if it is not on screen anymore. Not possible with
+                // for-each loop, because it would delete elements it was iterating over
+                for (int i = 0; i < gamePanel.platformCoordinates.size(); i++) {
+                    if (gamePanel.platformCoordinates.get(i).get(1) > gameFrame.getHeight()) {
+                            
+                        gamePanel.platformCoordinates.remove(i);
+                        i--;
+                    }
+                }
+
+                gamePanel.gameDistance += 20 - counter;
+                // pregenerates platforms if the player covers a certain distance
+                if (Math.abs(gamePanel.gameDistance - gamePanel.jumpHeight * 10) <= 100) {
+                    gamePanel.gameDistance -= gamePanel.jumpHeight * 10;
+
+                    gamePanel.generatePlatform(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
+                        - gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
+                }
+            } else {
+                gamePanel.y -= 20 - counter;
+            }
+        }
+    }
+
+    public void checkIfJump() {
+        jumped = false;
+
+        for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
+            if (!(counter >= 20)) { 
+                continue; // checks if the player is falling down
+            }
+            // calculates the player's position after performing the upcoming movement
+            int futureGamePanelY = gamePanel.y;
+            futureGamePanelY += Math.min(20, counter - 20 + 1);
+
+            // check if the player is currently above the platform and if the player will be
+            // beneath it after peforming the upcoming movement
+            if (!(i.get(1) >= gamePanel.y + gamePanel.playerHeight
+                && i.get(1) <= futureGamePanelY + gamePanel.playerHeight)) {
+                continue;
+            }
+
+            // check if player x coordinate is close to platform x coordinate
+            if (!(gamePanel.x + gamePanel.playerWidth - i.get(0) <= 60 + gamePanel.playerWidth 
+                && gamePanel.x + gamePanel.playerWidth - i.get(0) > 0)) {
+                continue;
+            }
+
+            gamePanel.y = i.get(1) - gamePanel.platformHeight - gamePanel.playerHeight;
+            counter = 0;
+            jumped = true;
+            gamePanel.repaint();
+            break;
+        }
     }
     
     @Override
@@ -46,8 +117,6 @@ public class PlayerMovement implements KeyListener, ActionListener {
             }
 
             if (isHoldingD && (gamePanel.x + 30) < gameFrame.getWidth()) {
-
-                
                 gamePanel.x += movementPixels;
                 //gamePanel.paintComponent(gamePanel.getGraphics());
                 //System.out.println(gamePanel.x + " " + gameFrame.getWidth());
@@ -57,71 +126,16 @@ public class PlayerMovement implements KeyListener, ActionListener {
         if (e.getSource() == jumpTimer) { //makes the player jump constantly
             //System.out.println("sfklads");
 
-            boolean jumped = false;
-
-
-
-            for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
-                if (!(counter >= 20)) { 
-                    continue; // checks if the player is falling down
-                }
-                // calculates the player's position after performing the upcoming movement
-                int futureGamePanelY = gamePanel.y;
-                futureGamePanelY += Math.min(20, counter - 20 + 1);
-
-                // check if the player is currently above the platform and if the player will be
-                // beneath it after peforming the upcoming movement
-                if (!(i.get(1) >= gamePanel.y + gamePanel.playerHeight
-                    && i.get(1) <= futureGamePanelY + gamePanel.playerHeight)) {
-                    continue;
-                }
-
-                // check if player x coordinate is close to platform x coordinate
-                if (!(gamePanel.x + gamePanel.playerWidth - i.get(0) <= 60 + gamePanel.playerWidth 
-                    && gamePanel.x + gamePanel.playerWidth - i.get(0) > 0)) {
-                    continue;
-                }
-
-                gamePanel.y = i.get(1) - gamePanel.platformHeight - gamePanel.playerHeight;
-                counter = 0;
-                jumped = true;
-                gamePanel.repaint();
-                break;
-            }
+            checkIfJump();
 
             if (!jumped) {
-                counter += 1;
-
-                if (counter >= 20) {
-                    gamePanel.y += Math.min(20, (counter - 20 + 1));
-                } else {
-                    // checks if player is below 
-                    if (gamePanel.y - (20 - counter) <= 500) {
-                        gamePanel.y = 500;
-                        for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
-                            i.set(1, i.get(1) + 20 - counter);
-                        }
-
-                        gamePanel.gameDistance += 20 - counter;
-                        // pregenerates platforms if the player covers a certain distance
-                        if (Math.abs(gamePanel.gameDistance - gamePanel.jumpHeight * 10) <= 100) {
-                            gamePanel.gameDistance -= gamePanel.jumpHeight * 10;
-
-                            gamePanel.generatePlatform(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
-                                - gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
-                        }
-                    } else {
-                        gamePanel.y -= 20 - counter;
-                    }
-                }
+                jump();
             }
             //gamePanel.paintComponent(gamePanel.getGraphics());
         }
         gamePanel.repaint(); // I don't know why, but repaint stops the flickering...
         //gamePanel.paintComponent(gamePanel.getGraphics());
-    }
-
-    
+    }    
 
     @Override
     public void keyPressed(KeyEvent e) {
