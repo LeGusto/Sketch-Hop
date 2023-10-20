@@ -13,6 +13,7 @@ public class ShapeDrawer extends JPanel {
     int playerHeight;
     int platformHeight;
     int playerWidth;
+    int gameDistance; //track how far the player has gotten
     JFrame gameFrame;
     //JPanel gamePanel;
 
@@ -32,13 +33,14 @@ public class ShapeDrawer extends JPanel {
         this.playerHeight = 55;
         this.playerWidth = 34;
         this.platformHeight = 15;
+        this.gameDistance = 0;
     }
     
     /**
      * .
      */
-    public void generatePlatform(int boundY) {
-        for (int i = gameFrame.getHeight(); i > boundY; i -= jumpHeight) {
+    public void generatePlatform(int lowerBoundY, int upperBoundY) {
+        for (int i = upperBoundY; i > lowerBoundY; i -= jumpHeight) {
             for (int j = 0; j < 5; j++) {
                 int randomX = rand.nextInt(gameFrame.getWidth());
                 int randomY = i - rand.nextInt(jumpHeight);

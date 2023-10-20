@@ -64,13 +64,13 @@ class GUI implements ActionListener {
         //frame.addKeyListener(something);
         //something.run();
         movement.run();
-        gamePanel.generatePlatform(0);
+        gamePanel.generatePlatform(-gamePanel.jumpHeight * 20, frame.getHeight());
+
+        // create a platform for the player to stand on in the beginning
         ArrayList<Integer> initPlatform = new ArrayList<Integer>();
         initPlatform.add(100);
         initPlatform.add(600);
         gamePanel.platformCoordinates.add(initPlatform);
-        //Platform platformGenerator = new Platform(-100, -100, frame);
-        //platformGenerator.generatePlatform(0);
 
     }
 

@@ -12,7 +12,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
     JFrame frame = new JFrame();
     JFrame gameFrame;
 
-    Timer jumpTimer = new Timer(10, this);
+    Timer jumpTimer = new Timer(20, this);
     Timer gameTimer = new Timer(10, this);    
 
     int movementPixels = 5; //amount of pixels the player moves each tick to the sides
@@ -96,10 +96,19 @@ public class PlayerMovement implements KeyListener, ActionListener {
                     gamePanel.y += Math.min(20, (counter - 20 + 1));
                 } else {
                     // checks if player is below 
-                    if (gamePanel.y - (20 - counter) <= 550) {
-                        gamePanel.y = 550;
+                    if (gamePanel.y - (20 - counter) <= 500) {
+                        gamePanel.y = 500;
                         for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
                             i.set(1, i.get(1) + 20 - counter);
+                        }
+
+                        gamePanel.gameDistance += 20 - counter;
+                        // pregenerates platforms if the player covers a certain distance
+                        if (Math.abs(gamePanel.gameDistance - gamePanel.jumpHeight * 10) <= 100) {
+                            gamePanel.gameDistance -= gamePanel.jumpHeight * 10;
+
+                            gamePanel.generatePlatform(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
+                                - gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
                         }
                     } else {
                         gamePanel.y -= 20 - counter;
