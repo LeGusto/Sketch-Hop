@@ -68,8 +68,8 @@ class GUI implements ActionListener {
 
         // create a platform for the player to stand on in the beginning
         ArrayList<Integer> initPlatform = new ArrayList<Integer>();
-        initPlatform.add(100);
-        initPlatform.add(600);
+        initPlatform.add(gamePanel.x);
+        initPlatform.add(gamePanel.y + 100);
         gamePanel.platformCoordinates.add(initPlatform);
 
     }

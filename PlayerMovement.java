@@ -9,7 +9,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
     boolean isHoldingA = false;
     boolean isHoldingD = false;
-    JFrame frame = new JFrame();
+    //JFrame frame = new JFrame();
     JFrame gameFrame;
 
     Timer jumpTimer = new Timer(20, this);
@@ -31,10 +31,8 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
     public void run() {
         jumpTimer.start();
-        System.out.println("Hsdfkalfds");
-        frame.addKeyListener(this);
-        frame.setVisible(true);
-        //gamePanel.setDoubleBuffered(true);
+        gameFrame.addKeyListener(this);
+        gameFrame.requestFocus();
     }
 
     public void jump() {
@@ -66,7 +64,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
                     gamePanel.gameDistance -= gamePanel.jumpHeight * 10;
 
                     gamePanel.generatePlatform(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
-                        - gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
+                        -gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
                 }
             } else {
                 gamePanel.y -= 20 - counter;
