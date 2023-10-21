@@ -6,9 +6,11 @@ import javax.swing.*;
 public class PlayerMovement implements KeyListener, ActionListener {
     //JFrame frame = new JFrame();
     ShapeDrawer gamePanel;
+    Platforms platforms;
 
     boolean isHoldingA = false;
     boolean isHoldingD = false;
+    boolean boosting = false; //if player is boosted by a booster platform
     //JFrame frame = new JFrame();
     JFrame gameFrame;
 
@@ -16,16 +18,17 @@ public class PlayerMovement implements KeyListener, ActionListener {
     Timer gameTimer = new Timer(10, this);    
 
     int movementPixels = 5; //amount of pixels the player moves each tick to the sides
+    int counter;
 
     //ShapeDrawer shapeDrawer = new ShapeDrawer();
 
     PlayerMovement(ShapeDrawer x, JFrame y) {
         gamePanel = x;
         gameFrame = y;
+        platforms = new Platforms(gamePanel, gameFrame);
+        this.counter = 0;
         //frame =  y;
     }
-
-    int counter = 0;
 
     boolean jumped = false;
 
@@ -35,53 +38,57 @@ public class PlayerMovement implements KeyListener, ActionListener {
         gameFrame.requestFocus();
     }
 
+    public int calculateMoveValue() {
+        int moveValue;
+
+        if (counter < 0) {
+            moveValue = counter;
+        } else {
+            moveValue = counter;
+        }
+
+        return moveValue;
+    }
+
+    /**
+     * Player performs a jump and updates screen.
+     */
     public void jump() {
         counter += 1;
-        
+
         if (counter >= 20) {
-            gamePanel.y += Math.min(20, (counter - 20 + 1));
+            gamePanel.y += Math.min(20, (calculateMoveValue() - 20 + 1));
         } else {
+
             // checks if player is below 
-            if (gamePanel.y - (20 - counter) <= 500) {
+            if (gamePanel.y - (20 - calculateMoveValue()) <= 500) {
                 gamePanel.y = 500;
-                for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
-                    i.set(1, i.get(1) + 20 - counter);
-                }
-
-                // removes platform if it is not on screen anymore. Not possible with
-                // for-each loop, because it would delete elements it was iterating over
-                for (int i = 0; i < gamePanel.platformCoordinates.size(); i++) {
-                    if (gamePanel.platformCoordinates.get(i).get(1) > gameFrame.getHeight()) {
-                            
-                        gamePanel.platformCoordinates.remove(i);
-                        i--;
-                    }
-                }
-
-                gamePanel.gameDistance += 20 - counter;
-                // pregenerates platforms if the player covers a certain distance
-                if (Math.abs(gamePanel.gameDistance - gamePanel.jumpHeight * 10) <= 100) {
-                    gamePanel.gameDistance -= gamePanel.jumpHeight * 10;
-
-                    gamePanel.generatePlatform(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
-                        -gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
-                }
+                platforms.lowerScreen(calculateMoveValue());
             } else {
-                gamePanel.y -= 20 - counter;
+                //if (!boosting) {
+                    System.out.println(counter);
+                    gamePanel.y -= 20 - calculateMoveValue();
+                //}
             }
         }
     }
 
+    /**
+     * Check if the player is going downwards and handle collision with platforms.
+     */
     public void checkIfJump() {
         jumped = false;
 
-        for (ArrayList<Integer> i : gamePanel.platformCoordinates) {
+        // loops over every platform
+        for (int j = 0; j < gamePanel.platformCoordinates.size(); j++) {
+
+            ArrayList<Integer> i = gamePanel.platformCoordinates.get(j);
             if (!(counter >= 20)) { 
                 continue; // checks if the player is falling down
             }
             // calculates the player's position after performing the upcoming movement
             int futureGamePanelY = gamePanel.y;
-            futureGamePanelY += Math.min(20, counter - 20 + 1);
+            futureGamePanelY += Math.min(20, calculateMoveValue() - 20 + 1);
 
             // check if the player is currently above the platform and if the player will be
             // beneath it after peforming the upcoming movement
@@ -96,8 +103,16 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 continue;
             }
 
+            if (i.get(2) == 4) {
+                boosting = true;
+                counter = -20;
+            } else if (i.get(2) == 3) {
+                gamePanel.platformCoordinates.remove(i);
+                counter = 0;
+            } else {
+                counter = 0;
+            }
             gamePanel.y = i.get(1) - gamePanel.platformHeight - gamePanel.playerHeight;
-            counter = 0;
             jumped = true;
             gamePanel.repaint();
             break;

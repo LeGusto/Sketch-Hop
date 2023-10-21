@@ -18,8 +18,6 @@ public class ShapeDrawer extends JPanel {
     JFrame gameFrame;
     //JPanel gamePanel;
 
-    Random rand = new Random(3);
-
     // dumb data structuring
     ArrayList<ArrayList<Integer>> platformCoordinates;
 
@@ -41,60 +39,41 @@ public class ShapeDrawer extends JPanel {
     /**
      * .
      */
-    public void generatePlatform(int lowerBoundY, int upperBoundY) {
-        for (int i = upperBoundY; i > lowerBoundY; i -= jumpHeight) {
-
-            for (int j = 0; j < gameFrame.getWidth(); j += 0) {
-                int randomX = rand.nextInt(j, j + 200);
-                int randomY = i - rand.nextInt(jumpHeight - platformHeight - 5);
-
-                
-                ArrayList<Integer> list = new ArrayList<>();
-                list.add(randomX);
-                list.add(randomY);
-                
-                int type = rand.nextInt(5);
-
-                list.add(type);
-
-                platformCoordinates.add(list);
-
-                j = randomX + platformWidth + 10;
-                
-            }
-        }
-    }
-
-    /**
-     * .
-     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);        
 
         // loop over platforms and paint them
-        g.setColor(new Color(0, 0, 0));
         for (ArrayList<Integer> i : platformCoordinates) {
             switch (i.get(2)) {
                 case 0: // normal platform
+                    g.setColor(new Color(0, 0, 0));
                     g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
                     break;
                 case 1: // horizontally moving platform
+                    g.setColor(new Color(0, 0, 0));
                     g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
                     break;
                 case 2: // vertically moving platform
+                    g.setColor(new Color(0, 0, 0));
                     g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
                     break;
                 case 3: // breakable platform
+                    g.setColor(new Color(0, 100, 0));
                     g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
                     break;
                 case 4: // booster platform
+                    g.setColor(new Color(0, 0, 255));
                     g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
                     break;
                 default:
+                    g.setColor(new Color(0, 0, 0));
                     g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
             }
             
         }
+
+        //paints the player
+        g.setColor(new Color(0, 0, 0));
         g.fillRect(x, y, playerWidth, playerHeight);
     
     }

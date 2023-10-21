@@ -17,11 +17,13 @@ class GUI implements ActionListener {
     PlayerMovement movement;
     Boolean lost = false;
     ShapeDrawer gamePanel;
+    Platforms platforms;
 
     GUI() {
         frame = new JFrame("game");
         gamePanel = new ShapeDrawer(frame);
         movement = new PlayerMovement(gamePanel, frame);
+        platforms = new Platforms(gamePanel, frame);
     }
 
     void startGame() {
@@ -64,13 +66,10 @@ class GUI implements ActionListener {
         //frame.addKeyListener(something);
         //something.run();
         movement.run();
-        gamePanel.generatePlatform(-gamePanel.jumpHeight * 20, frame.getHeight());
+        platforms.generateRandomPlatforms(-gamePanel.jumpHeight * 20, frame.getHeight());
 
         // create a platform for the player to stand on in the beginning
-        ArrayList<Integer> initPlatform = new ArrayList<Integer>();
-        initPlatform.add(gamePanel.x);
-        initPlatform.add(gamePanel.y + 100);
-        gamePanel.platformCoordinates.add(initPlatform);
+        platforms.generatePlatform(gamePanel.x, gamePanel.y + 100, 0);
 
     }
 
