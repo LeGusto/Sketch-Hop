@@ -6,13 +6,15 @@ Take user keyboard input (Demonstrated by pressing a button on your keyboard and
 
 Player and platform objects (Demonstrated by a visible objects upon launching the game and pressing play)
 
-Player-platform interactions (Demonstrated by the player jumping on a platform and going up)
-
-Platforms with different functionalities (Demonstrated by platforms that possess unique traits such as moving side to side)
-
 Movement for the character (Demonstrated by an object that moves upon receiving user keyboard input)
 
+Player-platform interactions (Demonstrated by the player jumping on a platform and going up)
+
 Procedural generation for the level (Demonstrated by procedurally appearing platforms as the player moves up)
+
+"Camera" following player
+
+Platforms with different functionalities (Demonstrated by platforms that possess unique traits such as moving side to side)
 
 Sprites for objects (Demonstrated by nice looking pictures representing the objects)
 

@@ -52,6 +52,11 @@ public class ShapeDrawer extends JPanel {
                 ArrayList<Integer> list = new ArrayList<>();
                 list.add(randomX);
                 list.add(randomY);
+                
+                int type = rand.nextInt(5);
+
+                list.add(type);
+
                 platformCoordinates.add(list);
 
                 j = randomX + platformWidth + 10;
@@ -69,8 +74,28 @@ public class ShapeDrawer extends JPanel {
         // loop over platforms and paint them
         g.setColor(new Color(0, 0, 0));
         for (ArrayList<Integer> i : platformCoordinates) {
-            g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+            switch (i.get(2)) {
+                case 0: // normal platform
+                    g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+                    break;
+                case 1: // horizontally moving platform
+                    g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+                    break;
+                case 2: // vertically moving platform
+                    g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+                    break;
+                case 3: // breakable platform
+                    g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+                    break;
+                case 4: // booster platform
+                    g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+                    break;
+                default:
+                    g.fillRect(i.get(0), i.get(1), platformWidth, platformHeight);
+            }
+            
         }
         g.fillRect(x, y, playerWidth, playerHeight);
+    
     }
 }
