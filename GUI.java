@@ -46,9 +46,9 @@ class GUI implements ActionListener {
 
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
 
-
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize((int) size.getWidth(), (int) size.getHeight());
+        frame.setMinimumSize(new Dimension(1920, 1080));
         frame.setVisible(true);
 
         gamePanel.setBackground(new Color(0, 200, 250));
