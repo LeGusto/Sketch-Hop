@@ -19,6 +19,7 @@ public class Platforms {
     /**
      * Picks a pseudo-random platform type and returns it. The frequency of special
      * platforms increases the higher the player goes.
+     * 
      * @return randomly generated platform type.
      */
     public int pickPlatformType() {
@@ -35,30 +36,31 @@ public class Platforms {
 
     /**
      * Creates and adds many platforms with semi-randomized coordinates and types.
+     * 
      * @param lowerBoundY Y coordinate where the generation should stop.
-     * @param upperBoundY Y coordinate where the generation should end.
+     * @param upperBoundY Y coordinate where the generation should start.
      */
     public void generateRandomPlatforms(int lowerBoundY, int upperBoundY) {
         // The speed at which platforms become more scarce the higher the score is
-        int platformScarcity = (gamePanel.gameScore / 1000) * 50;
+        int platformScarcity = Math.min((gamePanel.gameScore / 1000) * 50, 800);
         for (int i = upperBoundY; i > lowerBoundY; i -= gamePanel.jumpHeight) {
             for (int j = 0; j < gameFrame.getWidth(); j += 0) {
-                int randomX = rand.nextInt(j, j + 200 + ((gamePanel.gameScore / 1000) * 50));
+                int randomX = rand.nextInt(j, j + 200 + platformScarcity);
                 int randomY = i - rand.nextInt(gamePanel.jumpHeight - gamePanel.platformHeight - 5);
 
-                
                 generatePlatform(randomX, randomY, pickPlatformType());
 
                 j = randomX + gamePanel.platformWidth + 10;
-                
+
             }
         }
     }
 
     /**
      * Generates and adds a platform to the platform ArrayList.
-     * @param x x coordinte.
-     * @param y y coordinate.
+     * 
+     * @param x    x coordinte.
+     * @param y    y coordinate.
      * @param type type of platform.
      */
     public void generatePlatform(int x, int y, int type) {
@@ -83,9 +85,11 @@ public class Platforms {
     }
 
     /**
-        Moves down every platform and pregenerates more if needed, keeps track of game distance.
-        @param counter The current stage of the players movement in playerMovement.
-    */
+     * Moves down every platform and pregenerates more if needed, keeps track of
+     * game distance.
+     * 
+     * @param counter The current stage of the players movement in playerMovement.
+     */
     public void lowerScreen(int counter) {
         for (Platform i : gamePanel.platformData) {
             i.y += 20 - counter;
@@ -115,6 +119,55 @@ public class Platforms {
 
             generateRandomPlatforms(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
                     -gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
+        }
+    }
+
+    /*
+     * Checks if the platform should change direction.
+     */
+    public Boolean checkDirection(Platform i) {
+        Boolean change = false;
+
+        if (i.type == 1) { // horizontally moving platforms
+            if (i.x >= i.startPosition || i.x <= i.endPosition) {
+                change = true;
+            }
+        } else if (i.type == 2) { // vertically moving platforms
+            if (i.y >= i.startPosition || i.y <= i.endPosition) {
+                change = true;
+            }
+        }
+
+        return change;
+    }
+
+    /*
+     * Moves special moving platforms.
+     */
+    public void movePlatforms() {
+        for (Platform i : gamePanel.platformData) {
+            
+            if (checkDirection(i)) { // change direction if necessary
+                i.direction = !i.direction;
+            }
+
+            if (i.type == 1) { // horizontally moving platforms
+
+                if (i.direction) {
+                    i.x -= 5;
+                } else {
+                    i.x += 5;
+                }
+            }
+
+            if (i.type == 2) { // vertically moving platforms
+
+                if (i.direction) {
+                    i.y -= 5;
+                } else {
+                    i.y += 5;
+                }
+            }
         }
     }
 }

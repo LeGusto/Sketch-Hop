@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class PlayerMovement implements KeyListener, ActionListener {
-    //JFrame frame = new JFrame();
     ShapeDrawer gamePanel;
     Platforms platforms;
 
     boolean isHoldingA = false;
     boolean isHoldingD = false;
     boolean boosting = false; //if player is boosted by a booster platform
-    //JFrame frame = new JFrame();
     JFrame gameFrame;
 
     Timer jumpTimer = new Timer(20, this);
@@ -21,14 +19,16 @@ public class PlayerMovement implements KeyListener, ActionListener {
     int movementPixels = 5; //amount of pixels the player moves each tick to the sides
     int counter;
 
-    //ShapeDrawer shapeDrawer = new ShapeDrawer();
-
-    PlayerMovement(ShapeDrawer x, JFrame y) {
-        gamePanel = x;
-        gameFrame = y;
+    /**
+     * Constructor.
+     * @param panel game panel
+     * @param frame game frame
+     */
+    PlayerMovement(ShapeDrawer panel, JFrame frame) {
+        gamePanel = panel;
+        gameFrame = frame;
         platforms = new Platforms(gamePanel, gameFrame);
         this.counter = 0;
-        //frame =  y;
     }
 
     boolean jumped = false;
@@ -51,6 +51,23 @@ public class PlayerMovement implements KeyListener, ActionListener {
         return moveValue;
     }
 
+    public void restartGame() {
+        gamePanel.platformData.clear();
+        gamePanel.gameScore = 0;
+        gamePanel.gameDistance = -250;
+        gamePanel.x = 100;
+        gamePanel.y = 500;
+        platforms.generateRandomPlatforms(-gamePanel.jumpHeight * 20, gameFrame.getHeight());
+
+        // create a platform for the player to stand on in the beginning
+        platforms.generatePlatform(gamePanel.x, gamePanel.y + 100, 0);
+
+        gameTimer.start();
+        jumpTimer.start();
+
+        
+    }
+
     /**
      * Player performs a jump and updates screen.
      */
@@ -59,6 +76,11 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
         if (counter >= 20) {
             gamePanel.y += Math.min(20, (calculateMoveValue() - 20 + 1));
+            if (gamePanel.y > gameFrame.getHeight() + 200) {
+                gameTimer.stop();
+                jumpTimer.stop();
+                restartGame();
+            }
         } else {
 
             // checks if player is below 
@@ -66,10 +88,8 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 gamePanel.y = 500;
                 platforms.lowerScreen(calculateMoveValue());
             } else {
-                //if (!boosting) {
                 System.out.println(counter);
                 gamePanel.y -= 20 - calculateMoveValue();
-                //}
             }
         }
     }
@@ -87,14 +107,20 @@ public class PlayerMovement implements KeyListener, ActionListener {
             if (!(counter >= 20)) { 
                 continue; // checks if the player is falling down
             }
+
             // calculates the player's position after performing the upcoming movement
             int futureGamePanelY = gamePanel.y;
             futureGamePanelY += Math.min(20, calculateMoveValue() - 20 + 1);
 
             // account for moving platforms
             int futurePlatformHeight = i.y;
+            Boolean futureDirection = i.direction;
             if (i.type == 2) {
-                if (!i.direction) {
+                if (platforms.checkDirection(i)) {
+                    futureDirection = !futureDirection;
+                }
+
+                if (!futureDirection) {
                     futurePlatformHeight += platforms.platformSpeed;
                 } else {
                     futurePlatformHeight -= platforms.platformSpeed;
@@ -129,71 +155,31 @@ public class PlayerMovement implements KeyListener, ActionListener {
             break;
         }
     }
-
-    public void movePlatforms() {
-        for (Platform i : gamePanel.platformData) {
-            if (i.type == 1) { // horizontally moving platforms
-                if (i.y >= i.startPosition) {
-                    i.direction = true;
-                } else if ((i.y <= i.endPosition)) {
-                    i.direction = false;
-                }
-
-                if (i.direction) {
-                    i.x -= 5;
-                } else {
-                    i.x += 5;
-                }
-            }
-
-            if (i.type == 2) { // vertically moving platforms
-                if (i.y >= i.startPosition) {
-                    i.direction = true;
-                } else if ((i.y <= i.endPosition)) {
-                    i.direction = false;
-                }
-                
-                if (i.direction) {
-                    i.y -= 5;
-                } else {
-                    i.y += 5;
-                }
-            }
-        }
-    }
      
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == gameTimer) {
-            if (isHoldingA && gamePanel.x > 0) {
-                //System.out.println("pressing A");
-            
+            if (isHoldingA && gamePanel.x > 0) {   
                 gamePanel.x -= movementPixels;
-                //gamePanel.paintComponent(gamePanel.getGraphics());
             }
 
             if (isHoldingD && (gamePanel.x + 30) < gameFrame.getWidth()) {
                 gamePanel.x += movementPixels;
-                //gamePanel.paintComponent(gamePanel.getGraphics());
-                //System.out.println(gamePanel.x + " " + gameFrame.getWidth());
             }
         }
 
         if (e.getSource() == jumpTimer) { //makes the player jump constantly
-            //System.out.println("sfklads");
 
             checkIfJump();
 
             if (!jumped) {
                 jump();
             }
-            //gamePanel.paintComponent(gamePanel.getGraphics());
 
-            movePlatforms();
+            platforms.movePlatforms();
         }
 
-        gamePanel.repaint(); // I don't know why, but repaint stops the flickering...
-        //gamePanel.paintComponent(gamePanel.getGraphics());
+        gamePanel.repaint();
     }
 
     @Override

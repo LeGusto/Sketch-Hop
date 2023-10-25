@@ -19,14 +19,20 @@ class GUI implements ActionListener {
     ShapeDrawer gamePanel;
     Platforms platforms;
 
+    /**
+     * Constructor.
+     */
     GUI() {
-        frame = new JFrame("game");
-        gamePanel = new ShapeDrawer(frame);
-        movement = new PlayerMovement(gamePanel, frame);
-        platforms = new Platforms(gamePanel, frame);
+        this.frame = new JFrame("game");
+        this.gamePanel = new ShapeDrawer(frame);
+        this.movement = new PlayerMovement(gamePanel, frame);
+        this.platforms = new Platforms(gamePanel, frame);
     }
 
-    void startGame() {
+    /**
+     * Creates GUI elements and displays the main menu.
+     */
+    public void startGame() {
         startPanel = new JPanel(new FlowLayout());
         playButton = new JButton("Start");
 
@@ -51,12 +57,17 @@ class GUI implements ActionListener {
         frame.setMinimumSize(new Dimension(1920, 1080));
         frame.setVisible(true);
 
+        //gamePanel.setLayout(null);
         gamePanel.setBackground(new Color(0, 200, 250));
         gamePanel.setVisible(false);
         frame.add(gamePanel);
     }
 
-    void playGame() {
+    /**
+     * Hides the main menu, displays the game panel, pregenerates some platforms
+     * and initiates player movement.
+     */
+    public void playGame() {
         startPanel.setVisible(false);
         label.setVisible(false);
         gamePanel.setVisible(true);
@@ -71,6 +82,12 @@ class GUI implements ActionListener {
         // create a platform for the player to stand on in the beginning
         platforms.generatePlatform(gamePanel.x, gamePanel.y + 100, 0);
 
+    }
+
+    public void loseGame() {
+        for (int i = 0; i < gamePanel.platformData.size(); i++) {
+            gamePanel.platformData.remove(i);
+        }
     }
 
     @Override

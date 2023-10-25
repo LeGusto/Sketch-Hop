@@ -53,8 +53,9 @@ public class ShapeDrawer extends JPanel {
         for (Platform i : platformData) {
             switch (i.type) {
                 case 0: // normal platform
-                    g.setColor(new Color(0, 0, 0));
-                    g.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    Toolkit t = Toolkit.getDefaultToolkit();
+                    Image d = t.getImage("pixil-frame-0.png");
+                    g.drawImage(d, i.x, i.y, this);
                     break;
                 case 1: // horizontally moving platform
                     g.setColor(new Color(0, 0, 0));
@@ -78,6 +79,7 @@ public class ShapeDrawer extends JPanel {
             }
             
         }
+
 
         //paints the player
         g.setColor(new Color(0, 0, 0));
