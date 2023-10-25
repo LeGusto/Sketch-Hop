@@ -11,6 +11,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
     boolean isHoldingD = false;
     boolean boosting = false; //if player is boosted by a booster platform
     JFrame gameFrame;
+    JButton restartButton;
 
     Timer jumpTimer = new Timer(20, this);
     Timer gameTimer = new Timer(10, this);
@@ -37,6 +38,11 @@ public class PlayerMovement implements KeyListener, ActionListener {
         jumpTimer.start();
         gameFrame.addKeyListener(this);
         gameFrame.requestFocus();
+
+        restartButton = new JButton("Retry");
+        restartButton.addActionListener(this);
+        restartButton.setVisible(false);
+        gamePanel.add(restartButton);
     }
 
     public int calculateMoveValue() {
@@ -64,6 +70,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
         gameTimer.start();
         jumpTimer.start();
+        gameFrame.requestFocus();
 
         
     }
@@ -79,7 +86,9 @@ public class PlayerMovement implements KeyListener, ActionListener {
             if (gamePanel.y > gameFrame.getHeight() + 200) {
                 gameTimer.stop();
                 jumpTimer.stop();
-                restartGame();
+                restartButton.setVisible(true);
+                System.out.println("sdfjklsfjk");
+                //restartGame();
             }
         } else {
 
@@ -166,9 +175,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
             if (isHoldingD && (gamePanel.x + 30) < gameFrame.getWidth()) {
                 gamePanel.x += movementPixels;
             }
-        }
-
-        if (e.getSource() == jumpTimer) { //makes the player jump constantly
+        } else if (e.getSource() == jumpTimer) { //makes the player jump constantly
 
             checkIfJump();
 
@@ -177,6 +184,10 @@ public class PlayerMovement implements KeyListener, ActionListener {
             }
 
             platforms.movePlatforms();
+
+        } else {
+            restartGame();
+            restartButton.setVisible(false);
         }
 
         gamePanel.repaint();
