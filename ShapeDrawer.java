@@ -19,6 +19,8 @@ public class ShapeDrawer extends JPanel {
     JFrame gameFrame;
     //JPanel gamePanel;
 
+    Toolkit t = Toolkit.getDefaultToolkit();
+
     // dumb data structuring
     ArrayList<Platform> platformData;
 
@@ -30,8 +32,8 @@ public class ShapeDrawer extends JPanel {
     ShapeDrawer(JFrame gameFrame) {
         this.gameFrame = gameFrame;
         this.platformData = new ArrayList<Platform>(); 
-        this.playerHeight = 55;
-        this.playerWidth = 34;
+        this.playerHeight = 89;
+        this.playerWidth = 55;
         this.platformHeight = 15;
         this.gameDistance = -250;
         this.platformWidth = 60;
@@ -53,9 +55,8 @@ public class ShapeDrawer extends JPanel {
         for (Platform i : platformData) {
             switch (i.type) {
                 case 0: // normal platform
-                    Toolkit t = Toolkit.getDefaultToolkit();
-                    Image d = t.getImage("pixil-frame-0.png");
-                    g.drawImage(d, i.x, i.y, this);
+                    Image platformImage = t.getImage("pixil-frame-0.png");
+                    g.drawImage(platformImage, i.x, i.y, this);
                     break;
                 case 1: // horizontally moving platform
                     g.setColor(new Color(0, 0, 0));
@@ -80,10 +81,18 @@ public class ShapeDrawer extends JPanel {
             
         }
 
-
         //paints the player
+        Image characterImage = t.getImage("character3.png");
+        if ((PlayerMovement.counter >= 0 && PlayerMovement.counter <= 10) || PlayerMovement.counter > 30) {
+            characterImage = t.getImage("character2.png");
+        } else if (PlayerMovement.counter > 10 && PlayerMovement.counter <= 25) {
+            characterImage = t.getImage("character.png");
+        } else {
+            characterImage = t.getImage("character3.png");
+        }
+
         g.setColor(new Color(0, 0, 0));
-        g.fillRect(x, y, playerWidth, playerHeight);
+        g.drawImage(characterImage, x, y, playerWidth, playerHeight, this);
     
     }
 }

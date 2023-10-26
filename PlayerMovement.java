@@ -1,6 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Scanner;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -16,9 +22,11 @@ public class PlayerMovement implements KeyListener, ActionListener {
     Timer jumpTimer = new Timer(20, this);
     Timer gameTimer = new Timer(10, this);
     
+    ArrayList<Integer> highscores = new ArrayList<Integer>();
+    File scoreFile = new File("high scores.txt");
 
     int movementPixels = 5; //amount of pixels the player moves each tick to the sides
-    int counter;
+    static int counter;
 
     /**
      * Constructor.
@@ -75,8 +83,48 @@ public class PlayerMovement implements KeyListener, ActionListener {
         return moveValue;
     }
 
+    public void saveScores() {
+        try {
+            File scoreFile = new File("highscores.txt");
+            Scanner sc = new Scanner(scoreFile);
+
+            while (sc.hasNextInt()) {
+                highscores.add(sc.nextInt());
+            }
+            sc.close();
+
+            Collections.sort(highscores);
+
+            for (int e : highscores) {
+                if (gamePanel.gameScore > e) {
+                    highscores.set(highscores.indexOf(e), gamePanel.gameScore);
+                    break;
+                }
+            }
+
+            Collections.sort(highscores);
+
+            scoreFile.delete();
+            scoreFile.createNewFile();
+
+            FileWriter writer = new FileWriter("highscores.txt");
+
+            for (int e : highscores) {
+                writer.write(e);
+            }
+            
+            writer.close();
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void restartGame() {
         gamePanel.platformData.clear();
+
+        saveScores();
+
         gamePanel.gameScore = 0;
         gamePanel.gameDistance = -250;
         gamePanel.x = 100;
@@ -195,6 +243,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
         } else if (e.getSource() == jumpTimer) { //makes the player jump constantly
 
             checkIfJump();
+            System.out.println(counter);
 
             if (!jumped) {
                 jump();
