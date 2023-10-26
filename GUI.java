@@ -33,28 +33,39 @@ class GUI implements ActionListener {
      * Creates GUI elements and displays the main menu.
      */
     public void startGame() {
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+
         startPanel = new JPanel(new FlowLayout());
-        playButton = new JButton("Start");
+        //ImageIcon s = new ImageIcon("startButton.png");
+        playButton = new JButton(new ImageIcon("startButton.png"));
 
         playButton.addActionListener(this);
+        playButton.setOpaque(false);
+        playButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
+        playButton.setFocusPainted(false);
         //JButton playButton2 = new JButton("sakfdjdaskfjlskad");
         //JButton playButton3 = new JButton("cc vmxnczvx");
 
         spongebob = new ImageIcon("coolSpongebob.jpg");
         label = new JLabel(spongebob, JLabel.CENTER);
+        JLabel d = new JLabel("Sketch Hop");
 
-        startPanel.add(playButton);
+        startPanel.add(playButton, BorderLayout.SOUTH);
+        
+    
+        //playButton.setBounds(500, 500, 500, 500);
         //panel.add(playButton2);
         //panel.add(playButton3);
 
         frame.add(startPanel, BorderLayout.SOUTH);
         frame.add(label);
-
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.add(d);
+        
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize((int) size.getWidth(), (int) size.getHeight());
-        frame.setMinimumSize(new Dimension(1920, 1080));
+        frame.setMinimumSize(size);
         frame.setVisible(true);
 
         //gamePanel.setLayout(null);
@@ -69,6 +80,7 @@ class GUI implements ActionListener {
      */
     public void playGame() {
         startPanel.setVisible(false);
+        playButton.setVisible(false);
         label.setVisible(false);
         gamePanel.setVisible(true);
 

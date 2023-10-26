@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.Border;
 
 public class PlayerMovement implements KeyListener, ActionListener {
     ShapeDrawer gamePanel;
@@ -9,7 +10,6 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
     boolean isHoldingA = false;
     boolean isHoldingD = false;
-    boolean boosting = false; //if player is boosted by a booster platform
     JFrame gameFrame;
     JButton restartButton;
 
@@ -39,10 +39,28 @@ public class PlayerMovement implements KeyListener, ActionListener {
         gameFrame.addKeyListener(this);
         gameFrame.requestFocus();
 
-        restartButton = new JButton("Retry");
+        gamePanel.setSize(gameFrame.getSize());
+        System.out.println(gamePanel.getSize().getHeight());
+        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.LINE_AXIS));
+
+        restartButton = new JButton(new ImageIcon("restartButton.png"));
+        //restartButton.setLocation(500, 500);
         restartButton.addActionListener(this);
-        restartButton.setVisible(false);
+        gamePanel.add(Box.createHorizontalGlue());
+        gamePanel.add(Box.createVerticalGlue());
         gamePanel.add(restartButton);
+        gamePanel.add(Box.createHorizontalGlue());
+        gamePanel.add(Box.createVerticalGlue());
+        
+        restartButton.setOpaque(false);
+        restartButton.setContentAreaFilled(false);
+        restartButton.setBorderPainted(false);
+        restartButton.setFocusPainted(false);
+        //restartButton.
+        restartButton.setVisible(false);
+        //restartButton.setPreferredSize(new Dimension(100, 100));
+        
+        
     }
 
     public int calculateMoveValue() {
@@ -68,8 +86,8 @@ public class PlayerMovement implements KeyListener, ActionListener {
         // create a platform for the player to stand on in the beginning
         platforms.generatePlatform(gamePanel.x, gamePanel.y + 100, 0);
 
-        gameTimer.start();
-        jumpTimer.start();
+        //gameTimer.start();
+        //jumpTimer.start();
         gameFrame.requestFocus();
 
         
@@ -84,11 +102,11 @@ public class PlayerMovement implements KeyListener, ActionListener {
         if (counter >= 20) {
             gamePanel.y += Math.min(20, (calculateMoveValue() - 20 + 1));
             if (gamePanel.y > gameFrame.getHeight() + 200) {
-                gameTimer.stop();
-                jumpTimer.stop();
+                //gameTimer.stop();
+                //jumpTimer.stop();
+                //restartButton.setLocation(gameFrame.getWidth() / 2, gameFrame.getHeight() / 2);
                 restartButton.setVisible(true);
-                System.out.println("sdfjklsfjk");
-                //restartGame();
+                gamePanel.repaint();
             }
         } else {
 
@@ -97,7 +115,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 gamePanel.y = 500;
                 platforms.lowerScreen(calculateMoveValue());
             } else {
-                System.out.println(counter);
+                //System.out.println(counter);
                 gamePanel.y -= 20 - calculateMoveValue();
             }
         }
@@ -149,8 +167,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
                 continue;
             }
 
-            if (i.type == 4) {
-                boosting = true;
+            if (i.type == 4) { // boost player
                 counter = -20;
             } else if (i.type == 3) {
                 gamePanel.platformData.remove(i);
