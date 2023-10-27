@@ -23,6 +23,8 @@ public class ShapeDrawer extends JPanel {
 
     // dumb data structuring
     ArrayList<Platform> platformData;
+    ArrayList<Bullets> bulletData;
+    ArrayList<Enemies> enemyData;
 
     int jumpHeight = 95;
 
@@ -32,6 +34,8 @@ public class ShapeDrawer extends JPanel {
     ShapeDrawer(JFrame gameFrame) {
         this.gameFrame = gameFrame;
         this.platformData = new ArrayList<Platform>(); 
+        this.bulletData = new ArrayList<Bullets>();
+        this.enemyData = new ArrayList<Enemies>();
         this.playerHeight = 89;
         this.playerWidth = 55;
         this.platformHeight = 15;
@@ -81,6 +85,18 @@ public class ShapeDrawer extends JPanel {
                     g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
             }
             
+        }
+
+        // loops over bullets and paints them
+        for (Bullets i : bulletData) {
+            g2d.setColor(new Color(0, 0, 0));
+            g2d.fillOval(i.x, i.y, i.size, i.size);
+        }
+
+        // loops over enemies and paints them
+        for (Enemies i : enemyData) {
+            g2d.setColor(new Color(100, 50, 50));
+            g2d.fillRect(i.x, i.y, i.width, i.height);
         }
 
         //paints the player

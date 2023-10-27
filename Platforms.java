@@ -114,11 +114,18 @@ public class Platforms {
         gamePanel.gameScore += 20 - counter;
 
         // pregenerates platforms if the player covers a certain distance
+        // pregenerates enemies if the player covers a certain distance
         if (Math.abs(gamePanel.gameDistance - gamePanel.jumpHeight * 10) <= 100) {
             gamePanel.gameDistance -= gamePanel.jumpHeight * 10;
 
             generateRandomPlatforms(-gamePanel.jumpHeight * 20 - gamePanel.gameDistance,
                     -gamePanel.jumpHeight * 10 - gamePanel.gameDistance);
+
+            for (int i = 0; i < gamePanel.gameScore / 2000; i += 1) {
+                Enemies enemy = new Enemies(0, 0, gameFrame, gamePanel);
+                enemy.randomPosition(rand);
+                gamePanel.enemyData.add(enemy);
+            }
         }
     }
 

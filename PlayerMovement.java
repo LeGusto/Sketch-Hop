@@ -18,6 +18,7 @@ public class PlayerMovement implements KeyListener, ActionListener {
     boolean isHoldingD = false;
     JFrame gameFrame;
     JButton restartButton;
+    
 
     Timer jumpTimer = new Timer(20, this);
     Timer gameTimer = new Timer(10, this);
@@ -121,6 +122,8 @@ public class PlayerMovement implements KeyListener, ActionListener {
 
     public void restartGame() {
         gamePanel.platformData.clear();
+        gamePanel.enemyData.clear();
+        gamePanel.bulletData.clear();
 
         saveScores();
 
@@ -161,6 +164,14 @@ public class PlayerMovement implements KeyListener, ActionListener {
             if (gamePanel.y - (20 - calculateMoveValue()) <= 500) {
                 gamePanel.y = 500;
                 platforms.lowerScreen(calculateMoveValue());
+                for (Bullets i : gamePanel.bulletData) {
+                    i.y += 20 - calculateMoveValue();
+                }
+                for (Enemies i : gamePanel.enemyData) {
+                    i.y += 20 - calculateMoveValue();
+                    //System.out.println(i.y);
+                }
+
             } else {
                 //System.out.println(counter);
                 gamePanel.y -= 20 - calculateMoveValue();
@@ -228,6 +239,25 @@ public class PlayerMovement implements KeyListener, ActionListener {
             break;
         }
     }
+
+    public Boolean checkIfDeath() {
+
+        Boolean ans = false;
+        for (Enemies i : gamePanel.enemyData) {
+            if (!(gamePanel.y - i.y < gamePanel.playerHeight + i.height)) {
+                continue;
+            }
+            if (!((gamePanel.x + gamePanel.playerWidth - i.x) 
+                < gamePanel.playerWidth + i.width)) {
+                continue;
+            }
+
+            ans = true;
+            break;
+        }
+
+        return ans;
+    }
      
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -241,6 +271,12 @@ public class PlayerMovement implements KeyListener, ActionListener {
             }
         } else if (e.getSource() == jumpTimer) { //makes the player jump constantly
 
+            /*if (checkIfDeath()) { // checks if the player collides with an enemy
+                gamePanel.y = 5000;
+                restartButton.setVisible(true);
+                gamePanel.repaint();
+            };*/
+
             checkIfJump();
 
             if (!jumped) {
@@ -248,7 +284,9 @@ public class PlayerMovement implements KeyListener, ActionListener {
             }
 
             platforms.movePlatforms();
-
+            for (Bullets i : gamePanel.bulletData) {
+                i.moveBullet();
+            }
         } else {
             restartGame();
             restartButton.setVisible(false);
@@ -263,18 +301,38 @@ public class PlayerMovement implements KeyListener, ActionListener {
         if (e.getKeyCode() == 97 || e.getKeyCode() == 65 && !isHoldingA && gamePanel.x > 0) { 
             gamePanel.x -= movementPixels;
             gamePanel.repaint();
+            isHoldingA = true;
         }
         
         if (e.getKeyCode() == 100 || e.getKeyCode() == 68
             && !isHoldingD && (gamePanel.x + 30) < gameFrame.getWidth()) {
             gamePanel.x += movementPixels;
             gamePanel.repaint();
+            isHoldingD = true;
+        }
+
+        if (e.getKeyCode() == 49) {
+            Bullets bullet = new Bullets(0, gamePanel.x, gamePanel.y);
+            bullet.x = bullet.x - bullet.size / 2;
+            gamePanel.bulletData.add(bullet);
+        }
+
+        if (e.getKeyCode() == 50) {
+            Bullets bullet = new Bullets(1, gamePanel.x, gamePanel.y);
+            bullet.x = bullet.x + gamePanel.playerWidth / 2 - bullet.size / 2;
+            gamePanel.bulletData.add(bullet);
+        }
+
+        if (e.getKeyCode() == 51) {
+            Bullets bullet = new Bullets(2, gamePanel.x, gamePanel.y);
+            bullet.x = bullet.x + gamePanel.playerWidth;
+            gamePanel.bulletData.add(bullet);
         }
 
         // when the player presses a or A
-        isHoldingA = (e.getKeyCode() == 97 || e.getKeyCode() == 65);
+        //isHoldingA = (e.getKeyCode() == 97 || e.getKeyCode() == 65);
         // when the player presses d or D
-        isHoldingD = (e.getKeyCode() == 100 || e.getKeyCode() == 68);
+        //isHoldingD = (e.getKeyCode() == 100 || e.getKeyCode() == 68);
 
         
         if (isHoldingA || isHoldingD) {
