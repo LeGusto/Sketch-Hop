@@ -44,46 +44,49 @@ public class ShapeDrawer extends JPanel {
      * .
      */
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);        
+        super.paintComponent(g);
 
-        g.setColor(new Color(0, 0, 0));
-        Font font = new Font("Monospaced", Font.BOLD, 24);
-        g.setFont(font);
-        g.drawString("" + gameScore, 100, 100);
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setColor(new Color(0, 0, 0));
+        Font font = new Font("Comic Sans MS", Font.BOLD, 24);
+        g2d.setFont(font);
+        g2d.drawString("" + gameScore, 100, 100);
 
         // loop over platforms and paint them
         for (Platform i : platformData) {
             switch (i.type) {
                 case 0: // normal platform
                     Image platformImage = t.getImage("pixil-frame-0.png");
-                    g.drawImage(platformImage, i.x, i.y, this);
+                    g2d.drawImage(platformImage, i.x, i.y, this);
                     break;
                 case 1: // horizontally moving platform
-                    g.setColor(new Color(0, 0, 0));
-                    g.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    g2d.setColor(new Color(0, 0, 0));
+                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
                     break;
                 case 2: // vertically moving platform
-                    g.setColor(new Color(0, 0, 0));
-                    g.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    g2d.setColor(new Color(0, 0, 0));
+                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
                     break;
                 case 3: // breakable platform
-                    g.setColor(new Color(0, 100, 0));
-                    g.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    g2d.setColor(new Color(0, 100, 0));
+                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
                     break;
                 case 4: // booster platform
-                    g.setColor(new Color(0, 0, 255));
-                    g.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    g2d.setColor(new Color(0, 0, 255));
+                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
                     break;
                 default:
-                    g.setColor(new Color(0, 0, 0));
-                    g.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    g2d.setColor(new Color(0, 0, 0));
+                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
             }
             
         }
 
         //paints the player
         Image characterImage = t.getImage("character3.png");
-        if ((PlayerMovement.counter >= 0 && PlayerMovement.counter <= 10) || PlayerMovement.counter > 30) {
+        if ((PlayerMovement.counter >= 0 && PlayerMovement.counter <= 10)
+            || PlayerMovement.counter > 30) {
             characterImage = t.getImage("character2.png");
         } else if (PlayerMovement.counter > 10 && PlayerMovement.counter <= 25) {
             characterImage = t.getImage("character.png");
@@ -91,8 +94,12 @@ public class ShapeDrawer extends JPanel {
             characterImage = t.getImage("character3.png");
         }
 
-        g.setColor(new Color(0, 0, 0));
-        g.drawImage(characterImage, x, y, playerWidth, playerHeight, this);
-    
+        g2d.setColor(new Color(0, 0, 0));
+        g2d.drawImage(characterImage, x, y, playerWidth, playerHeight, this);
+
+        int greenIntensity = gameScore <= 10000 ? 200 - 200 * gameScore / 10000 : 0;
+        int blueIntensity = gameScore  <= 10000 ? 255 - 155 * gameScore / 10000 : 100;
+        
+        setBackground(new Color(0, greenIntensity, blueIntensity));
     }
 }

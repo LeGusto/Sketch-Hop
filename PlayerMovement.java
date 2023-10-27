@@ -48,7 +48,6 @@ public class PlayerMovement implements KeyListener, ActionListener {
         gameFrame.requestFocus();
 
         gamePanel.setSize(gameFrame.getSize());
-        System.out.println(gamePanel.getSize().getHeight());
         gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.LINE_AXIS));
 
         restartButton = new JButton(new ImageIcon("restartButton.png"));
@@ -243,7 +242,6 @@ public class PlayerMovement implements KeyListener, ActionListener {
         } else if (e.getSource() == jumpTimer) { //makes the player jump constantly
 
             checkIfJump();
-            System.out.println(counter);
 
             if (!jumped) {
                 jump();

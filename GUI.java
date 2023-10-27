@@ -69,7 +69,7 @@ class GUI implements ActionListener {
         frame.setVisible(true);
 
         //gamePanel.setLayout(null);
-        gamePanel.setBackground(new Color(0, 200, 250));
+
         gamePanel.setVisible(false);
         frame.add(gamePanel);
     }
