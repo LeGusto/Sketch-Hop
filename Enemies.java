@@ -1,26 +1,27 @@
+import java.awt.*;
 import java.util.Random;
-import javax.swing.JFrame;
+import javax.swing.*;
 
 public class Enemies {
-    int x;
-    int y;
-    int width;
-    int height;
+    int enemyX;
+    int enemyY;
+    int enemyWidth;
+    int enemyHeight;
     JFrame gameFrame;
     ShapeDrawer gamePanel;
 
     Enemies(int x, int y, JFrame gameFrame, ShapeDrawer gamePanel) {
-        this.x = x;
-        this.y = y;
+        this.enemyX = x;
+        this.enemyY = y;
         this.gameFrame = gameFrame;
         this.gamePanel = gamePanel;
-        this.width = 100;
-        this.height = 50;
+        this.enemyWidth = 100;
+        this.enemyHeight = 50;
     }
 
     public void randomPosition(Random rand) {
-        x = rand.nextInt(gameFrame.getWidth());
-        System.out.println(x);
-        y = -rand.nextInt(gamePanel.jumpHeight * 10, gamePanel.jumpHeight * 20);
+        enemyX = rand.nextInt(gameFrame.getWidth());
+        System.out.println(enemyX);
+        enemyY = -rand.nextInt(gamePanel.jumpHeight * 10, gamePanel.jumpHeight * 20);
     }
 }

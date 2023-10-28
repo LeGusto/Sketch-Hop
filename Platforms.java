@@ -1,4 +1,4 @@
-import java.awt.Shape;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
@@ -51,7 +51,6 @@ public class Platforms {
                 generatePlatform(randomX, randomY, pickPlatformType());
 
                 j = randomX + gamePanel.platformWidth + 10;
-
             }
         }
     }
@@ -106,6 +105,15 @@ public class Platforms {
             if (gamePanel.platformData.get(i).y > gameFrame.getHeight() + 200) {
 
                 gamePanel.platformData.remove(i);
+                i--;
+            }
+        }
+
+        // removes bullet if it is not on screen anymre
+        for (int i = 0; i < gamePanel.bulletData.size(); i++) {
+            if (gamePanel.bulletData.get(i).y <= 0) {
+
+                gamePanel.bulletData.remove(i);
                 i--;
             }
         }
