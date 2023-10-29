@@ -178,9 +178,7 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
     /**
      * Check if the player is going downwards and handle collision with platforms.
      */
-    public void checkIfJump() {
-        jumped = false;
-
+    public boolean checkIfJump() {
         // loops over every platform
         for (int j = 0; j < gamePanel.platformData.size(); j++) {
 
@@ -230,10 +228,11 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
                 counter = 0;
             }
             gamePanel.playerY = i.y - gamePanel.platformHeight - gamePanel.playerHeight;
-            jumped = true;
             gamePanel.repaint();
-            break;
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -287,7 +286,7 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
             }
         } else if (e.getSource() == jumpTimer) { // makes the player jump constantly
 
-            if (died && counter < 60) {
+            if (died && counter < 60) { // if the player died, overrides usual jump function.
                 deathAnimation();
                 platforms.movePlatforms();
                 for (Bullets i : gamePanel.bulletData) {
@@ -296,7 +295,7 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
                 }
                 gamePanel.repaint();
                 return;
-            } else if (died) {
+            } else if (died) { // if the death animation has finished.
                 restartButton.setVisible(true);
                 gamePanel.repaint();
             }
@@ -310,9 +309,7 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
                 return;
             }
 
-            checkIfJump();
-
-            if (!jumped) {
+            if (!checkIfJump()) {
                 jump();
             }
 
