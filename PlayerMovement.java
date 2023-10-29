@@ -318,10 +318,6 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
                 Bullets bullet = gamePanel.bulletData.get(i);
                 bullet.moveBullet();
                 bullet.checkCollisions(gamePanel.bulletData, gamePanel.enemyData);
-                /*if (hitEnemy != null) {
-                    gamePanel.bulletData.remove(i);
-                    gamePanel.bulletData.remove(hitEnemy);
-                }*/
             }
         } else if (e.getSource() == shootTimer) { //make the player able to shoot after a cooldown.
             shootTimer.stop();

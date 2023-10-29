@@ -73,31 +73,33 @@ public class ShapeDrawer extends JPanel {
         g2d.drawString("" + gameScore, 100, 100);
 
         // loop over platforms and paint them
+        Image platformImage;
         for (Platform i : platformData) {
             switch (i.type) {
                 case 0: // normal platform
-                    Image platformImage = t.getImage("Images\\pixil-frame-0.png");
+                    platformImage = t.getImage("Images\\blackPlatform.png");
                     g2d.drawImage(platformImage, i.x, i.y, this);
                     break;
                 case 1: // horizontally moving platform
-                    g2d.setColor(new Color(0, 0, 0));
-                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    platformImage = t.getImage("Images\\redPlatform.png");
+                    g2d.drawImage(platformImage, i.x, i.y, this);
                     break;
                 case 2: // vertically moving platform
-                    g2d.setColor(new Color(0, 0, 0));
-                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    platformImage = t.getImage("Images\\redPlatform.png");
+                    g2d.drawImage(platformImage, i.x, i.y, this);
                     break;
                 case 3: // breakable platform
-                    g2d.setColor(new Color(0, 100, 0));
-                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    platformImage = t.getImage("Images\\greenPlatform.png");
+                    g2d.drawImage(platformImage, i.x, i.y, this);
                     break;
                 case 4: // booster platform
-                    g2d.setColor(new Color(0, 0, 255));
-                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    platformImage = t.getImage("Images\\bluePlatform.png");
+                    g2d.drawImage(platformImage, i.x, i.y, this);
                     break;
                 default:
-                    g2d.setColor(new Color(0, 0, 0));
-                    g2d.fillRect(i.x, i.y, platformWidth, platformHeight);
+                    platformImage = t.getImage("Images\\blackPlatform.png");
+                    g2d.drawImage(platformImage, i.x, i.y, this);
+                    break;
             }
             
         }
