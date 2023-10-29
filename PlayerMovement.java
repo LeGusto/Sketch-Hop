@@ -236,7 +236,8 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
                 platforms.movePlatforms();
                 for (int i = 0; i < gamePanel.bulletData.size(); i++) {
                     gamePanel.bulletData.get(i).moveBullet();
-                    gamePanel.bulletData.get(i).checkCollisions(gamePanel.bulletData, gamePanel.enemyData);
+                    gamePanel.bulletData.get(i).checkCollisions(gamePanel.bulletData,
+                        gamePanel.enemyData);
                 }
                 gamePanel.repaint();
                 return;
