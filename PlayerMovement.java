@@ -234,9 +234,9 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
             if (died && jumpCounter < 60) { // if the player died, overrides usual jump function.
                 deathAnimation();
                 platforms.movePlatforms();
-                for (Bullet i : gamePanel.bulletData) {
-                    i.moveBullet();
-                    i.checkCollisions(gamePanel.bulletData, gamePanel.enemyData);
+                for (int i = 0; i < gamePanel.bulletData.size(); i++) {
+                    gamePanel.bulletData.get(i).moveBullet();
+                    gamePanel.bulletData.get(i).checkCollisions(gamePanel.bulletData, gamePanel.enemyData);
                 }
                 gamePanel.repaint();
                 return;
