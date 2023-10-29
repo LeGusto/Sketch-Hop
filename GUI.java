@@ -1,8 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.concurrent.Flow;
-
 import javax.swing.*;
 
 class GUI implements ActionListener, MouseListener {
@@ -86,6 +83,9 @@ class GUI implements ActionListener, MouseListener {
         frame.add(gamePanel);
     }
 
+    /**
+     * Sets up the help menu.
+     */
     public void helpMenu() {
         startPanel.setVisible(false);
         playButton.setVisible(false);
@@ -110,12 +110,6 @@ class GUI implements ActionListener, MouseListener {
 
         // create a platform for the player to stand on in the beginning
         platforms.generatePlatform(gamePanel.playerX, gamePanel.playerY + 100, 0);
-    }
-
-    public void loseGame() {
-        for (int i = 0; i < gamePanel.platformData.size(); i++) {
-            gamePanel.platformData.remove(i);
-        }
     }
 
     @Override

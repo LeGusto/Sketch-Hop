@@ -1,9 +1,5 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-
 /**
- * .
+ * Class which runs the code.
  */
 public class Main {
 

@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.*;
 
 
@@ -48,7 +47,7 @@ public class ShapeDrawer extends JPanel {
     }
     
     /**
-     * .
+     * Paints the platforms, bullets, enemies and player.
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -59,14 +58,15 @@ public class ShapeDrawer extends JPanel {
         Font font = new Font("Comic Sans MS", Font.PLAIN, 100);
         g2d.setFont(font);
 
-        try {
-            if (!gamePanel.isVisible()) {
-                g2d.drawString("Sketch Hop", gameFrame.getWidth() / 2 - 275, 120);
-                return;
-            }
-        } catch (Exception e) {
-            System.out.println("this is supposed to happen");
+        //try {
+        if (gamePanel != null && !gamePanel.isVisible()) {
+            g2d.drawString("Sketch Hop", gameFrame.getWidth() / 2 - 275, 120);
+            return;
         }
+        /*     }
+        } catch (Exception e) {
+            //System.out.println("this is supposed to happen");
+        }*/
 
         font = new Font("Comic Sans MS", Font.BOLD, 24);
         g2d.setFont(font);

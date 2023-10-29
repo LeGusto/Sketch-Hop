@@ -1,5 +1,8 @@
 import java.util.ArrayList;
 
+/**
+ * Bullets which the player shoots to kill enemies.
+ */
 public class Bullets {
 
     int speed;
@@ -9,10 +12,11 @@ public class Bullets {
     int y;
 
     /**
-     * Constructor
+     * Constructor.
+     * 
      * @param direction where the bullet is heading.
-     * @param x coordinate.
-     * @param y coordinate.
+     * @param x         coordinate.
+     * @param y         coordinate.
      */
     Bullets(int direction, int x, int y) {
         this.direction = direction;
@@ -41,5 +45,33 @@ public class Bullets {
             default:
                 this.y -= speed * 1.5;
         }
+    }
+
+    /**
+     * Checks if any bullet collides with an enemy and delets both if so.
+     * 
+     * @param bullets arraylist of bullets in the game.
+     * @param enemies arraylist of enemies in the game.
+     */
+    public boolean checkCollisions(ArrayList<Bullets> bullets, ArrayList<Enemies> enemies) {
+        Bullets bullet = this;
+        for (int j = 0; j < enemies.size(); j++) {
+            Enemies enemy = enemies.get(j);
+            if (!(bullet.y - enemy.enemyY > -bullet.size
+                    && bullet.y - enemy.enemyY <= enemy.enemyHeight)) {
+                continue;
+            }
+            if (!((bullet.x - enemy.enemyX > -bullet.size)
+                    && bullet.x - enemy.enemyX < enemy.enemyWidth)) {
+                continue;
+            }
+
+            System.out.println("Got here");
+
+            bullets.remove(bullet);
+            enemies.remove(enemy);
+            return true;
+        }
+        return false;
     }
 }

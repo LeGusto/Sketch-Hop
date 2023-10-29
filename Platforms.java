@@ -1,8 +1,9 @@
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.*;
 
+/**
+ * Methods for platform class objects.
+ */
 public class Platforms {
     ShapeDrawer gamePanel;
     JFrame gameFrame;
@@ -10,6 +11,11 @@ public class Platforms {
 
     Random rand = new Random(3);
 
+    /**
+     * Constructor. Platformspeed is the speed at which moving platforms move.
+     * @param gamePanel the game panel.
+     * @param gameFrame the game frame.
+     */
     Platforms(ShapeDrawer gamePanel, JFrame gameFrame) {
         this.gamePanel = gamePanel;
         this.gameFrame = gameFrame;
