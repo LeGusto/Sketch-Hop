@@ -1,38 +1,44 @@
 Name: Rendering a window to play the game in.
 Demonstrated by: launching the program and creating a new window for the game.
-Notes: Learning how to display a JFrame and JPanel.
+Notes: Display a JPanel inside of a JFrame.
 
-Name: Menu gui
-Demonstrated by: launching the game and seeing a menu before initializing the game
+Name: Menu gui.
+Demonstrated by: launching the game and seeing a menu before initializing the game.
 Notes: Adding JButtons for playing the game or accessing a help menu.
 
 Name: Create player object with jumping physics.
 Demonstrated by: a jumping player object appearing on screen when the game is played.
-Notes: 
+Notes: Create an algorithm for smooth player jumping and falling sequences.
+Related to: Algorithms.
 
 Name: Taking user keyboard input for movement.
 Demonstrated by: pressing a button on your keyboard and seeing an object move.
-Notes: Add a KeyListener to the frame and 
+Notes: Add a KeyListener to the frame and track keyboard inputs.
 
 Name: Create platform objects.
 Demonstrated by: visible objects upon launching the game and pressing play.
 Notes: Add proper constructor and relevant object methods.
+Related to: Algorithms.
 
 Name: Player-platform interactions.
 Demonstrated by: the player jumping on a platform and going up.
 Notes: Create an algorithm to register when the player is colliding with a platform.
+Related to: Algorithms.
 
 Name: Procedural generation for the level.
 Demonstrated by: procedurally appearing platforms as the player moves up.
-Notes: Create algorithm to generate platform and lowering the amount the higher the player goes
+Notes: Create algorithm to generate platform and lowering the amount the higher the player goes.
+Related to: Algorithms.
 
 Name: "Camera" following player.
 Demonstrated by: The game screen following the player as it goes up.
 Notes: Create algorithm for smooth and convenient camera movements.
+Related to: Algorithms.
 
 Name: Platforms with different functionalities.
 Demonstrated by: platforms that possess unique traits such as moving side to side.
 Notes: Make a way to differentiate platforms and add methods for their functions.
+Related to: Algorithms.
 
 Name: Sprites for objects.
 Demonstrated by: nice looking pictures representing the objects.
@@ -41,15 +47,17 @@ Notes: Learn how to display images.
 Name: Enemies.
 Demonstrated by: sprites that appear as the player goes up, which kill the player when it touches them.
 Notes: Integrate procedural generation for the enemies.
+Related to: Algorithms.
 
 Name: Player shooting ability.
 Demonstrated by: the player being able to shoot pellets upwards to kill enemies.
 Notes: Create class for bullets and add methods to detect collision with enemies and make the bullet move.
+Related to: Algorithms.
 
 Name: Score system.
 Demonstrated by: an increasing counter as the player goes up.
 Notes: Find a way to track how high the player goes and display it as a score.
 
 Topics of choice:
-1. Version control with git
-2. Algorithms
+1. Version control with git and Github. Link to repository: https://github.com/LeGusto/Sketch-Hop
+2. Algorithms.
