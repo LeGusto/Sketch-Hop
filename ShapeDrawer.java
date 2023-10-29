@@ -4,11 +4,11 @@ import javax.swing.*;
 
 
 /**
- * Poep.
+ * Contains method to draw objects and text on screen.
  */
 public class ShapeDrawer extends JPanel {
-    int playerX = 100;
-    int playerY = 500;
+    int playerX;
+    int playerY;
     int playerHeight;
     int platformHeight;
     int platformWidth;
@@ -16,38 +16,46 @@ public class ShapeDrawer extends JPanel {
     int gameDistance; //track how far the player has gotten
     int gameScore;
     JFrame gameFrame;
-    Shape playerShape;
     ShapeDrawer gamePanel;
+    ShapeDrawer helpPanel;
+    
+    Font titleFont = new Font("Comic Sans MS", Font.PLAIN, 100);
+    Font scoreFont = new Font("Comic Sans MS", Font.BOLD, 24);
+    Font helpFont =  new Font("Comic Sans MS", Font.PLAIN, 60);
 
     Toolkit t = Toolkit.getDefaultToolkit();
 
-    // dumb data structuring
     ArrayList<Platform> platformData;
-    ArrayList<Bullets> bulletData;
-    ArrayList<Enemies> enemyData;
+    ArrayList<Bullet> bulletData;
+    ArrayList<Enemy> enemyData;
 
     int jumpHeight = 95;
 
     /**
-     * .
+     * Constructor.
+     * @param gameFrame the game frame.
+     * @param gamePanel the game panel.
+     * @param helpPanel the help panel.
      */
-    ShapeDrawer(JFrame gameFrame, ShapeDrawer gamePanel) {
+    ShapeDrawer(JFrame gameFrame, ShapeDrawer gamePanel, ShapeDrawer helpPanel) {
         this.gameFrame = gameFrame;
         this.platformData = new ArrayList<Platform>(); 
-        this.bulletData = new ArrayList<Bullets>();
-        this.enemyData = new ArrayList<Enemies>();
+        this.bulletData = new ArrayList<Bullet>();
+        this.enemyData = new ArrayList<Enemy>();
+        this.playerX = 100;
+        this.playerY = 500;
         this.playerHeight = 89;
         this.playerWidth = 55;
         this.platformHeight = 15;
         this.gameDistance = -250;
         this.platformWidth = 60;
         this.gameScore = 0;
-        this.playerShape = new Rectangle(playerX, playerY, playerWidth, playerHeight);
         this.gamePanel = gamePanel;
+        this.helpPanel = helpPanel;
     }
     
     /**
-     * Paints the platforms, bullets, enemies and player.
+     * Paints the text, platforms, bullets, enemies and player.
      */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -55,73 +63,51 @@ public class ShapeDrawer extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setColor(new Color(0, 0, 0));
-        Font font = new Font("Comic Sans MS", Font.PLAIN, 100);
-        g2d.setFont(font);
+        g2d.setFont(titleFont);
 
-        //try {
-        if (gamePanel != null && !gamePanel.isVisible()) {
+        // if in help menu
+        if (gamePanel != null && helpPanel == null) {
+            
+            g2d.setFont(helpFont);
+            g2d.drawString("The goal of the game is to jump from", 100, 200);
+            g2d.drawString("platform to platform and get as high as possible", 100, 275);
+            g2d.drawString("A - Move Left", gameFrame.getWidth() / 2 - 300, 450);
+            g2d.drawString("D - Move Right", gameFrame.getWidth() / 2 - 300, 525);
+            g2d.drawString("Arrow keys - Shoot bullets", gameFrame.getWidth() / 2 - 300, 600);
+            
+            g2d.setFont(titleFont);
+            g2d.drawString("Help", gameFrame.getWidth() / 2 - 100, 100);            
+            return;
+        } else if (gamePanel != null && helpPanel != null) { // if in main menu
             g2d.drawString("Sketch Hop", gameFrame.getWidth() / 2 - 275, 120);
             return;
         }
-        /*     }
-        } catch (Exception e) {
-            //System.out.println("this is supposed to happen");
-        }*/
 
-        font = new Font("Comic Sans MS", Font.BOLD, 24);
-        g2d.setFont(font);
+        g2d.setFont(scoreFont);
         g2d.drawString("" + gameScore, 100, 100);
 
         // loop over platforms and paint them
-        Image platformImage;
         for (Platform i : platformData) {
-            switch (i.type) {
-                case 0: // normal platform
-                    platformImage = t.getImage("Images\\blackPlatform.png");
-                    g2d.drawImage(platformImage, i.x, i.y, this);
-                    break;
-                case 1: // horizontally moving platform
-                    platformImage = t.getImage("Images\\redPlatform.png");
-                    g2d.drawImage(platformImage, i.x, i.y, this);
-                    break;
-                case 2: // vertically moving platform
-                    platformImage = t.getImage("Images\\redPlatform.png");
-                    g2d.drawImage(platformImage, i.x, i.y, this);
-                    break;
-                case 3: // breakable platform
-                    platformImage = t.getImage("Images\\greenPlatform.png");
-                    g2d.drawImage(platformImage, i.x, i.y, this);
-                    break;
-                case 4: // booster platform
-                    platformImage = t.getImage("Images\\bluePlatform.png");
-                    g2d.drawImage(platformImage, i.x, i.y, this);
-                    break;
-                default:
-                    platformImage = t.getImage("Images\\blackPlatform.png");
-                    g2d.drawImage(platformImage, i.x, i.y, this);
-                    break;
-            }
-            
+            g2d.drawImage(i.platformImage, i.platformX, i.platformY, this);
         }
 
         // loops over bullets and paints them
-        for (Bullets i : bulletData) {
+        for (Bullet i : bulletData) {
             g2d.setColor(new Color(0, 0, 0));
-            g2d.fillOval(i.x, i.y, i.size, i.size);
+            g2d.fillOval(i.bulletX, i.bulletY, i.size, i.size);
         }
 
         // loops over enemies and paints them
-        for (Enemies i : enemyData) {
-            g2d.setColor(new Color(100, 50, 50));
-            g2d.fillRect(i.enemyX, i.enemyY, i.enemyWidth, i.enemyHeight);
+        for (Enemy i : enemyData) {
+            g2d.drawImage(i.enemyImage, i.enemyX, i.enemyY, i.enemyWidth, i.enemyHeight, this);
         }
 
         //paints the player
         Image characterImage = t.getImage("Images\\character3.png");
-        if ((PlayerMovement.counter >= 0 && PlayerMovement.counter <= 10)
-            || PlayerMovement.counter > 30) {
+        if ((PlayerMovement.jumpCounter >= 0 && PlayerMovement.jumpCounter <= 10)
+            || PlayerMovement.jumpCounter > 30) {
             characterImage = t.getImage("Images\\character2.png");
-        } else if (PlayerMovement.counter > 10 && PlayerMovement.counter <= 25) {
+        } else if (PlayerMovement.jumpCounter > 10 && PlayerMovement.jumpCounter <= 25) {
             characterImage = t.getImage("Images\\character.png");
         } else {
             characterImage = t.getImage("Images\\character3.png");

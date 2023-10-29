@@ -2,7 +2,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-class GUI implements ActionListener, MouseListener {
+/**
+ * Contains methods to display the main menu, help menu and game panel.
+ */
+public class GUI implements ActionListener, MouseListener {
 
     JFrame frame; 
     ShapeDrawer startPanel;
@@ -13,25 +16,25 @@ class GUI implements ActionListener, MouseListener {
     PlayerMovement movement;
     Boolean lost = false;
     ShapeDrawer gamePanel;
-    Platforms platforms;
+    PlatformMethods platforms;
 
     /**
      * Constructor.
      */
     GUI() {
-        this.frame = new JFrame("game");
-        this.gamePanel = new ShapeDrawer(frame, gamePanel);
-        this.helpPanel = new ShapeDrawer(frame, gamePanel);
+        this.frame = new JFrame("Sketch Hop");
+        this.gamePanel = new ShapeDrawer(frame, gamePanel, helpPanel);
+        this.helpPanel = new ShapeDrawer(frame, gamePanel, helpPanel);
         this.movement = new PlayerMovement(gamePanel, frame);
-        this.platforms = new Platforms(gamePanel, frame);
+        this.platforms = new PlatformMethods(gamePanel, frame);
     }
 
     /**
      * Creates GUI elements and displays the main menu.
      */
     public void startGame() {
-        startPanel = new ShapeDrawer(frame, gamePanel);
-        //ImageIcon s = new ImageIcon("startButton.png");
+        this.startPanel = new ShapeDrawer(frame, gamePanel, helpPanel);
+        
         playButton = new JButton(new ImageIcon("Images\\startButton.png"));
         helpButton = new JButton(new ImageIcon("Images\\helpButton.png"));
 
@@ -41,8 +44,6 @@ class GUI implements ActionListener, MouseListener {
         playButton.setContentAreaFilled(false);
         playButton.setBorderPainted(false);
         playButton.setFocusPainted(false);
-        //JButton playButton2 = new JButton("sakfdjdaskfjlskad");
-        //JButton playButton3 = new JButton("cc vmxnczvx");
 
         helpButton.addActionListener(this);
         helpButton.addMouseListener(this);
@@ -53,7 +54,7 @@ class GUI implements ActionListener, MouseListener {
 
         startPanel.setLayout(null);
 
-        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension size = new Dimension(1920, 1080);
         Dimension playButtonSize = playButton.getPreferredSize();
 
         playButton.setBounds((int) (size.getWidth() - playButtonSize.width) / 2,
@@ -67,17 +68,12 @@ class GUI implements ActionListener, MouseListener {
         startPanel.setBackground(new Color(0, 200, 255));
         
         frame.add(startPanel);
-    
-        //playButton.setBounds(500, 500, 500, 500);
-        //panel.add(playButton2);
-        //panel.add(playButton3);
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize((int) size.getWidth(), (int) size.getHeight());
         frame.setMinimumSize(size);
+        frame.setMaximumSize(size);
         frame.setVisible(true);
-
-        //gamePanel.setLayout(null);
 
         gamePanel.setVisible(false);
         frame.add(gamePanel);
@@ -86,25 +82,41 @@ class GUI implements ActionListener, MouseListener {
     /**
      * Sets up the help menu.
      */
-    public void helpMenu() {
+    private void helpMenu() {
         startPanel.setVisible(false);
         playButton.setVisible(false);
         helpPanel.setVisible(true);
+        helpPanel.setBackground(new Color(0, 200, 255));
+        playButton = new JButton(new ImageIcon("Images\\startButton.png"));
+
+        playButton.addActionListener(this);
+        playButton.addMouseListener(this);
+        playButton.setOpaque(false);
+        playButton.setContentAreaFilled(false);
+        playButton.setBorderPainted(false);
+        playButton.setFocusPainted(false);
+
+        helpPanel.setLayout(null);
+
+        Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension playButtonSize = playButton.getPreferredSize();
+
+        playButton.setBounds((int) (size.getWidth() - playButtonSize.width) / 2,
+            700, playButtonSize.width, playButtonSize.height);
+
+        helpPanel.add(playButton);
+        frame.add(helpPanel);
     }
 
     /**
      * Hides the main menu, displays the game panel, pregenerates some platforms
      * and initiates player movement.
      */
-    public void playGame() {
+    private void playGame() {
         startPanel.setVisible(false);
         playButton.setVisible(false);
         gamePanel.setVisible(true);
 
-        //PlayerMovement something = new PlayerMovement();
-        //gamePanel = something.shapeDrawer;
-        //frame.addKeyListener(something);
-        //something.run();
         movement.run();
         platforms.generateRandomPlatforms(-gamePanel.jumpHeight * 20, frame.getHeight());
 

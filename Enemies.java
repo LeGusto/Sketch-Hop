@@ -1,3 +1,5 @@
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.util.Random;
 import javax.swing.*;
 
@@ -9,6 +11,7 @@ public class Enemies {
     int enemyY;
     int enemyWidth;
     int enemyHeight;
+    Image enemyImage;
     JFrame gameFrame;
     ShapeDrawer gamePanel;
 
@@ -26,6 +29,7 @@ public class Enemies {
         this.gamePanel = gamePanel;
         this.enemyWidth = 100;
         this.enemyHeight = 50;
+        this.enemyImage = randomImage();
     }
 
     /**
@@ -34,7 +38,25 @@ public class Enemies {
      */
     public void randomPosition(Random rand) {
         enemyX = rand.nextInt(gameFrame.getWidth());
-        System.out.println(enemyX);
         enemyY = -rand.nextInt(gamePanel.jumpHeight * 10, gamePanel.jumpHeight * 20);
+    }
+
+    /**
+     * Picks and assigns a random image for the enemy.
+     * @return randomly chosen image.
+     */
+    private Image randomImage() {
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Random rand = new Random();
+        switch (rand.nextInt(4)) {
+            case 0:
+                return t.getImage("Images\\enemy1.png");
+            case 1:
+                return t.getImage("Images\\enemy2.png");
+            case 2:
+                return t.getImage("Images\\enemy3.png");
+            default:
+                return t.getImage("Images\\enemy1.png");
+        }
     }
 }
