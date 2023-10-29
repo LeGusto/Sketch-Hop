@@ -54,7 +54,7 @@ public class Enemy {
             case 1: // horizontally moving platform
                 return t.getImage("Images\\enemy2.png");
             case 2: // vertically moving platform
-                return t.getImage("Images\\enemy1.png");
+                return t.getImage("Images\\enemy3.png");
             default:
                 return t.getImage("Images\\enemy1.png");
         }

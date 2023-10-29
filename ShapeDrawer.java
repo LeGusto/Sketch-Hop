@@ -69,11 +69,11 @@ public class ShapeDrawer extends JPanel {
         if (gamePanel != null && helpPanel == null) {
             
             g2d.setFont(helpFont);
-            g2d.drawString("The goal of the game is to jump from", 100, 200);
-            g2d.drawString("platform to platform and get as high as possible", 100, 275);
-            g2d.drawString("A - Move Left", gameFrame.getWidth() / 2 - 300, 450);
-            g2d.drawString("D - Move Right", gameFrame.getWidth() / 2 - 300, 525);
-            g2d.drawString("Arrow keys - Shoot bullets", gameFrame.getWidth() / 2 - 300, 600);
+            g2d.drawString("The goal of the game is to jump from platfrom", 200, 200);
+            g2d.drawString("to platform and get as high as possible", 200, 275);
+            g2d.drawString("A - Move Left", gameFrame.getWidth() / 2 - 300, 400);
+            g2d.drawString("D - Move Right", gameFrame.getWidth() / 2 - 300, 475);
+            g2d.drawString("Arrow keys - Shoot bullets", gameFrame.getWidth() / 2 - 300, 550);
             
             g2d.setFont(titleFont);
             g2d.drawString("Help", gameFrame.getWidth() / 2 - 100, 100);            

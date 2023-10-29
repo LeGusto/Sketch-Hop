@@ -51,7 +51,6 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
         gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.LINE_AXIS));
 
         restartButton = new JButton(new ImageIcon("Images\\restartButton.png"));
-        //restartButton.setLocation(500, 500);
         restartButton.addActionListener(this);
         restartButton.addMouseListener(this);
         gamePanel.add(Box.createHorizontalGlue());
@@ -74,9 +73,6 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
         gamePanel.platformData.clear();
         gamePanel.enemyData.clear();
         gamePanel.bulletData.clear();
-
-        //saveScores();
-
         gamePanel.gameScore = 0;
         gamePanel.gameDistance = -250;
         gamePanel.playerX = 100;
@@ -103,9 +99,6 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
         if (jumpCounter >= 20) {
             gamePanel.playerY += Math.min(20, (jumpCounter - 20 + 1));
             if (gamePanel.playerY > gameFrame.getHeight() + 200) {
-                //gameTimer.stop();
-                //jumpTimer.stop();
-                //restartButton.setLocation(gameFrame.getWidth() / 2, gameFrame.getHeight() / 2);
                 restartButton.setVisible(true);
                 gamePanel.repaint();
             }
@@ -218,12 +211,10 @@ public class PlayerMovement implements KeyListener, ActionListener, MouseListene
     private void deathAnimation() {
         jumpCounter = jumpCounter + 1;
         if (jumpCounter <= 15) {
-            //gamePanel.playerY -= (50 / (1 + counter));
             gamePanel.playerY -= 15 - jumpCounter;
             gamePanel.playerX -= 3;
         } else {
             gamePanel.playerY -= 15 - jumpCounter;
-            //gamePanel.playerY += 25 - (50 / (1 + counter - 15));
             gamePanel.playerX -= 3;
         }
     }

@@ -102,7 +102,7 @@ public class GUI implements ActionListener, MouseListener {
         Dimension playButtonSize = playButton.getPreferredSize();
 
         playButton.setBounds((int) (size.getWidth() - playButtonSize.width) / 2,
-            700, playButtonSize.width, playButtonSize.height);
+            600, playButtonSize.width, playButtonSize.height);
 
         helpPanel.add(playButton);
         frame.add(helpPanel);
